@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surat Romantis</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@400;700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: linear-gradient(to bottom, #ff9a9e, #fad0c4, #fbc2eb);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden;
+        }
+
+        .envelope {
+            width: 300px;
+            height: 200px;
+            background: #e63946;
+            position: relative;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-bottom: 100px solid #e63946;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .envelope.open::before {
+            transform: rotateX(-180deg);
+        }
+
+        .letter {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%) translateY(200%);
+            width: 280px;
+            background: #fff;
+            border-radius: 10px;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+            animation: none;
+        }
+
+        .envelope.open .letter {
+            animation: slideUp 1s forwards;
+        }
+
+        .envelope.close .letter {
+            animation: slideDown 1s forwards;
+        }
+
+        .letter h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 24px;
+            color: #e63946;
+        }
+
+        .letter p {
+            font-size: 14px;
+            color: #333;
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+
+        .letter .signature {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #888;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateX(-50%) translateY(200%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(-50%) translateY(200%);
+                opacity: 0;
+            }
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            color: #ff4d6d;
+            animation: floatUp 5s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-500px); opacity: 0; }
+        }
+
+        .heart-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 4;
+        }
+
+        @media screen and (max-width: 600px) {
+            .envelope {
+                width: 90%;
+                height: 150px;
+            }
+
+            .envelope::before {
+                border-left: 45%;
+                border-right: 45%;
+                border-bottom: 75px solid #e63946;
+            }
+
+            .letter {
+                width: 90%;
+                padding: 15px;
+            }
+
+            .letter h1 {
+                font-size: 18px;
+            }
+
+            .letter p {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="envelope" id="envelope" onclick="toggleEnvelope()">
+        <div class="letter">
+            <h1>Haloo Incess Sharin ❤️</h1>
+            <p>Seneng banget bisa kenal sama kamu, walaupun perkenalan kita cuma sebentar tapi aku udah naruh kamu di hati aku dan udah nganggep kamu sebagai orang spesial :)</p>
+            <p>Walaupun kamu suka lama dan kadang engga bales kalo chat, tapi notif dari kamu selalu yang aku tunggu hehe...</p>
+            <p>Semoga tahun ini membawa banyak kebahagiaan untukmu 🌟</p>
+            <p>Jangan lupa selalu jaga kesehatan dan tetap jadi Sharin yang ceria yaa 😊</p>
+            <div class="signature">- r -</div>
+        </div>
+    </div>
+
+    <!-- Kontainer Hati -->
+    <div class="heart-container" id="heart-container"></div>
+
+    <!-- Musik -->
+    <audio id="background-music" loop>
+        <source src="https://archive.org/download/rex-orange-county-best-friend-official-audio/Rex%20Orange%20County%20-%20Best%20Friend%20%28Official%20Audio%29.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        let isOpen = false;
+
+        function toggleEnvelope() {
+            const envelope = document.getElementById('envelope');
+            const music = document.getElementById('background-music');
+
+            if (isOpen) {
+                envelope.classList.remove('open');
+                envelope.classList.add('close');
+                isOpen = false;
+            } else {
+                envelope.classList.remove('close');
+                envelope.classList.add('open');
+                releaseHearts();
+                music.currentTime = 29; // Set musik mulai dari detik ke-29
+                music.play();
+                isOpen = true;
+            }
+        }
+
+        function releaseHearts() {
+            const container = document.getElementById('heart-container');
+            for (let i = 0; i < 50; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 2 + 's';
+                heart.style.fontSize = Math.random() * 20 + 20 + 'px';
+                container.appendChild(heart);
+
+                setTimeout(() => heart.remove(), 5000); // Remove heart after animation ends
+            }
+        }
+    </script>
+</body>
+</html>
